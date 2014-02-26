@@ -13,12 +13,30 @@ directory node.deis.runtime.slug_dir do
   mode 0700
 end
 
+
+old_home = ENV['HOME']
+
+ruby_block "clear_home for CHEF-3940" do
+  block do
+    ENV['HOME'] = Etc.getpwnam(node.deis.username).dir
+  end
+  not_if {`git --version`.split[2].to_f <= 1.7}
+end
+
 git node.deis.runtime.runner_dir do
   user node.deis.username
   group node.deis.group
   repository node.deis.runtime.repository
   revision node.deis.runtime.revision
   action :sync
+end
+
+ruby_block "reset_home" do
+  block do
+    ENV['HOME'] = old_home
+  end
+  not_if {`git --version`.split[2].to_f <= 1.7}
+  subscribes :create, "git[#{node.deis.runtime.runner_dir}]", :immediately
 end
 
 bash 'create-slugrunner-image' do
