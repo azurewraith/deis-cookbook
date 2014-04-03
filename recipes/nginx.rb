@@ -1,10 +1,8 @@
 #
-# Cookbook Name:: deis-proxy
-# Recipe:: default
+# Cookbook Name:: deis
+# Recipe:: nginx
 #
-# Copyright 2013, YOUR_COMPANY_NAME
-#
-# All rights reserved - Do Not Redistribute
+# Copyright 2013, OpDemand LLC
 #
 
 include_recipe 'apt'
@@ -21,7 +19,15 @@ package 'nginx'
 
 link '/etc/nginx/sites-enabled/default' do
   action :delete
-  notifies :restart, "service[nginx]", :delayed
+  notifies :restart, 'service[nginx]', :delayed
+end
+
+template '/etc/nginx/sites-enabled/default-response' do
+  user 'root'
+  group 'root'
+  mode 0644
+  source 'nginx-default-response'
+  notifies :restart, 'service[nginx]', :delayed
 end
 
 template '/etc/nginx/nginx.conf' do
@@ -29,7 +35,7 @@ template '/etc/nginx/nginx.conf' do
   group 'root'
   mode 0644
   source 'nginx.conf.erb'
-  notifies :restart, "service[nginx]", :delayed
+  notifies :restart, 'service[nginx]', :delayed
 end
 
 service 'nginx' do

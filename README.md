@@ -20,9 +20,9 @@ Deis depends on the following cookbooks:
 
 [Berkshelf](http://berkshelf.com) is used for managing cookbook dependencies.
 
-    bundle install    # to install required gems, including berkshelf
-    berks install     # to install cookbooks to the berkshelf directory
-    berks upload      # to upload cookbooks to your chef server
+    bundle install                # to install required gems, including berkshelf
+    bundle exec berks install     # to install cookbooks to the berkshelf directory
+    bundle exec berks upload      # to upload cookbooks to your chef server
 
 # Attributes
 TODO: List Deis cookbook attributes.
@@ -64,6 +64,15 @@ The proxy recipe will iterate over the `deis-formations` databag and configure N
 ### Notes
 
 The destination for rsyslog clients is determined by a Chef search for recipe[deis::controller], and using the `ipaddress` attribute.
+
+# Contributing
+
+Contributions are welcome! Please open a pull request after fully testing your changes.
+
+This cookbook tests Ruby style with [rubocop](https://github.com/bbatsov/rubocop), Chef style with [foodcritic](http://acrmp.github.io/foodcritic/),
+unit tests with [ChefSpec](https://github.com/sethvargo/chefspec) and a full integration with [test-kitchen](http://kitchen.ci/).
+
+See [CONTRIBUTING](https://github.com/opdemand/deis-cookbook/blob/master/CONTRIBUTING.md) for more details.
 
 # License
 

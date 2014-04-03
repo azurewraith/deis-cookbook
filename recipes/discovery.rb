@@ -1,9 +1,16 @@
+#
+# Cookbook Name:: deis
+# Recipe:: discovery
+#
+# Copyright 2013, OpDemand LLC
+#
+
+include_recipe 'deis::default'
 
 docker_image node.deis.etcd.repository do
   repository node.deis.etcd.repository
   tag node.deis.etcd.tag
   action node.deis.autoupgrade ? :pull : :pull_if_missing
-  cmd_timeout node.deis.etcd.image_timeout
   notifies :redeploy, "docker_container[#{node.deis.etcd.container}]", :immediately
 end
 
@@ -31,24 +38,17 @@ bash 'install-etcdctl' do
   creates '/usr/local/bin/etcdctl'
 end
 
-ruby_block 'wait-for-discovery' do
-  block do
-    Connect.wait_tcp(node.deis.public_ip, node.deis.etcd.port, seconds=30)
-    Connect.wait_http("http://#{node.deis.public_ip}:#{node.deis.etcd.port}/version", seconds=30)
-  end
-end
-
 require 'etcd'
 ruby_block 'publish-chef-config' do
   block do
     client = Etcd.client(host: node.deis.public_ip, port: node.deis.etcd.port)
-    client.set('/deis/chef/url', "#{Chef::Config[:chef_server_url]}")
-    client.set('/deis/chef/clientName', "#{Chef::Config[:node_name]}")
-    client.set('/deis/chef/clientKey', "#{Base64.strict_encode64(File.read(Chef::Config[:client_key]))}")
-    client.set('/deis/chef/validationName', "#{Chef::Config[:validation_client_name]}")
-    client.set('/deis/chef/validationKey', "#{Base64.strict_encode64(File.read(Chef::Config[:validation_key]))}")
+    client.set('/deis/chef/url', Chef::Config[:chef_server_url])
+    client.set('/deis/chef/clientName', Chef::Config[:node_name])
+    client.set('/deis/chef/clientKey', Base64.strict_encode64(File.read(Chef::Config[:client_key])))
+    client.set('/deis/chef/validationName', Chef::Config[:validation_client_name])
+    client.set('/deis/chef/validationKey', Base64.strict_encode64(File.read(Chef::Config[:validation_key])))
   end
-  not_if {
+  not_if do
     begin
       client = Etcd.client(host: node.deis.public_ip, port: node.deis.etcd.port)
       client.get('/deis/chef')
@@ -56,5 +56,5 @@ ruby_block 'publish-chef-config' do
     rescue Net::HTTPServerException, Net::HTTPFatalError
       false
     end
-  }
+  end
 end
