@@ -1,5 +1,23 @@
 ## Change Log
 
+## v0.7.0 (TBD)
+- [#108](https://github.com/opdemand/deis-cookbook/pull/108) Adds Chefspec tests
+- [#109](https://github.com/opdemand/deis-cookbook/pull/109) Adds serverspec tests
+- [#107](https://github.com/opdemand/deis-cookbook/pull/107) Remove 'wait-for*' blocks
+- [#106](https://github.com/opdemand/deis-cookbook/pull/106) Refactor builder recipe
+- [#105](https://github.com/opdemand/deis-cookbook/pull/105) Removes workaround added in #97
+- [#101](https://github.com/opdemand/deis-cookbook/pull/101) Clean up cookbook structure
+- [#86](https://github.com/opdemand/deis-cookbook/pull/86) Adds default nginx response for proxy nodes
+- [#93](https://github.com/opdemand/deis-cookbook/pull/93) Remove docker pull timeouts
+- [#104](https://github.com/opdemand/deis-cookbook/pull/104) Added NTP Client to the packages
+- [#94](https://github.com/opdemand/deis-cookbook/pull/94) remove unused source attributes
+- [#98](https://github.com/opdemand/deis-cookbook/pull/98) Fix Foodcritic
+- [e72a4fb](https://github.com/opdemand/deis-cookbook/commit/e72a4fba93797d83b2feed6b37920fb1c3c139ef) - Have Test Kitchen test deis::controller
+- [#95](https://github.com/opdemand/deis-cookbook/pull/95) Adds Foodcritic linting
+- [#96](https://github.com/opdemand/deis-cookbook/pull/96) Remove version lock on chef-docker
+- [#90](https://github.com/opdemand/deis-cookbook/pull/90) bump docker to v0.9.0
+- [#92](https://github.com/opdemand/deis-cookbook/pull/92) Locks cookbook dependencies to known versions
+
 ### v0.6.0 (2014/03/24 02:38 +00:00)
 - [02e5755](https://github.com/opdemand/deis-cookbook/commit/02e5755164e3c31f1d5298c8040382012307924f) Switch master to v0.6.0. (@mboersma)
 - [d6339ae](https://github.com/opdemand/deis-cookbook/commit/d6339ae69c3e669aa9844c0babd33f70353548b7) merge server and worker as one image (@bacongobbler)
